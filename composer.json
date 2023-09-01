@@ -24,7 +24,7 @@
 	"repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/sau64inc/Validation"
+            "url": "https://github.com/sau64inc/validation"
         }
     ],
     "require": {

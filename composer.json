@@ -30,7 +30,7 @@
     "require": {
         "php": ">=7.1",
         "psr/http-message": "^1.0",
-        "sau64inc/validation": "^1.1"
+        "sau64inc/validation": "master"
     },
     "require-dev": {
         "phpunit/phpunit": ">=7.0",

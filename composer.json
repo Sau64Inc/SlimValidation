@@ -30,7 +30,7 @@
     "require": {
         "php": ">=7.1",
         "psr/http-message": "^1.0",
-	"Respect/Validation": "^2.1"
+	"Respect/Validation": "^2."
     },
     "require-dev": {
         "phpunit/phpunit": ">=7.0",

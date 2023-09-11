@@ -187,7 +187,7 @@ class Validator implements ValidatorInterface
      *
      * @return self
      */
-    public function value($value, $rules, string $key, ?string $group = null, array $messages = []): self
+    public function value($value, $rules, string|null $key, ?string $group = null, array $messages = []): self
     {
         return $this->validateInput($value, new Configuration($rules, $key, $group), $messages);
     }
@@ -536,19 +536,19 @@ class Validator implements ValidatorInterface
      *
      * @return string[]
      */
-    protected function getRulesNames(Validatable $validatable): array
-    {
-        if ($validatable instanceof AbstractComposite) {
-            $rulesNames = [];
-            foreach ($validatable->getRules() as $rule) {
-                array_push($rulesNames, ...$this->getRulesNames($rule instanceof AbstractWrapper ? $rule->getValidatable() : $rule));
-            }
+    // protected function getRulesNames(Validatable $validatable): array
+    // {
+    //     if ($validatable instanceof AbstractComposite) {
+    //         $rulesNames = [];
+    //         foreach ($validatable->getRules() as $rule) {
+    //             array_push($rulesNames, ...$this->getRulesNames($rule instanceof AbstractWrapper ? $rule->getValidatable() : $rule));
+    //         }
 
-            return $rulesNames;
-        }
+    //         return $rulesNames;
+    //     }
 
-        return [lcfirst((new ReflectionClass($validatable))->getShortName())];
-    }
+    //     return [lcfirst((new ReflectionClass($validatable))->getShortName())];
+    // }
 
     /**
      * Handles a validation exception.
@@ -590,23 +590,24 @@ class Validator implements ValidatorInterface
     protected function storeErrors(NestedValidationException $e, Configuration $config, array $messages = [])
     {
         $errors = [
-            $e->findMessages($this->getRulesNames($config->getValidationRules()))
+            $e->getMessages()
+            // $e->getMessages($this->getRulesNames($config->getValidationRules()))
         ];
 
         // If default messages are defined
-        if (!empty($this->defaultMessages)) {
-            $errors[] = $e->findMessages($this->defaultMessages);
-        }
+        // if (!empty($this->defaultMessages)) {
+        //     $errors[] = $e->getMessages($this->defaultMessages);
+        // }
 
-        // If global messages are defined
-        if (!empty($messages)) {
-            $errors[] = $e->findMessages($messages);
-        }
+        // // If global messages are defined
+        // if (!empty($messages)) {
+        //     $errors[] = $e->getMessages($messages);
+        // }
 
-        // If individual messages are defined
-        if ($config->hasMessages()) {
-            $errors[] = $e->findMessages($config->getMessages());
-        }
+        // // If individual messages are defined
+        // if ($config->hasMessages()) {
+        //     $errors[] = $e->getMessages($config->getMessages());
+        // }
 
         $this->setErrors($this->mergeMessages($errors), $config->getKey(), $config->getGroup());
     }

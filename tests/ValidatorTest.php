@@ -146,7 +146,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($this->validator->isValid());
         $this->assertEquals([
             'username' => [
-                'length' => '"a_wurth" must have a length greater than 8'
+                'length' => '"a_wurth" must have a length greater than or equal to 8'
             ]
         ], $this->validator->getErrors());
     }
@@ -163,7 +163,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($this->validator->isValid());
         $this->assertEquals([
             'username' => [
-                '"a_wurth" must have a length greater than 8'
+                '"a_wurth" must have a length greater than or equal to 8'
             ]
         ], $this->validator->getErrors());
     }
@@ -178,7 +178,7 @@ class ValidatorTest extends TestCase
         $this->assertEquals([
             'user' => [
                 'username' => [
-                    'length' => '"a_wurth" must have a length greater than 8'
+                    'length' => '"a_wurth" must have a length greater than or equal to 8'
                 ]
             ]
         ], $this->validator->getErrors());

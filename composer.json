@@ -21,16 +21,10 @@
             "Awurth\\SlimValidation\\Tests\\": "tests"
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/sau64inc/validation"
-        }
-    ],
     "require": {
         "php": ">=8.4",
         "psr/http-message": "^1.0",
-        "sau64inc/validation": "^1.0"
+        "respect/validation": "^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.0 || ^12.0",

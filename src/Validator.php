@@ -17,6 +17,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
 use Respect\Validation\Exceptions\NestedValidationException;
+use Respect\Validation\Factory;
 use Respect\Validation\Rules\AbstractComposite;
 use Respect\Validation\Rules\AbstractWrapper;
 use Respect\Validation\Validatable;
@@ -70,6 +71,12 @@ class Validator implements ValidatorInterface
         $this->defaultMessages = $defaultMessages;
         $this->errors = [];
         $this->values = [];
+
+        Factory::setDefaultInstance(
+            (new Factory())
+                ->withRuleNamespace('Awurth\\SlimValidation\\Rules')
+                ->withExceptionNamespace('Awurth\\SlimValidation\\Exceptions')
+        );
     }
 
     /**

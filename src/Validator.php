@@ -16,6 +16,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
+use Awurth\SlimValidation\Translation\TranslationManager;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Factory;
 use Respect\Validation\Rules\AbstractComposite;
@@ -53,6 +54,13 @@ class Validator implements ValidatorInterface
     protected $showValidationRules;
 
     /**
+     * The translation manager for locale-based messages.
+     *
+     * @var TranslationManager|null
+     */
+    protected ?TranslationManager $translationManager;
+
+    /**
      * The validated data.
      *
      * @var array
@@ -62,15 +70,29 @@ class Validator implements ValidatorInterface
     /**
      * Constructor.
      *
-     * @param bool     $showValidationRules
-     * @param string[] $defaultMessages
+     * @param bool                    $showValidationRules
+     * @param string[]                $defaultMessages
+     * @param string|null             $locale
+     * @param TranslationManager|null $translationManager
      */
-    public function __construct(bool $showValidationRules = true, array $defaultMessages = [])
-    {
+    public function __construct(
+        bool $showValidationRules = true,
+        array $defaultMessages = [],
+        ?string $locale = null,
+        ?TranslationManager $translationManager = null
+    ) {
         $this->showValidationRules = $showValidationRules;
         $this->defaultMessages = $defaultMessages;
         $this->errors = [];
         $this->values = [];
+
+        if ($translationManager !== null) {
+            $this->translationManager = $translationManager;
+        } elseif ($locale !== null) {
+            $this->translationManager = new TranslationManager($locale);
+        } else {
+            $this->translationManager = null;
+        }
 
         Factory::setDefaultInstance(
             (new Factory())
@@ -535,25 +557,41 @@ class Validator implements ValidatorInterface
     }
 
     /**
-     * Gets the name of all rules of a group of rules.
+     * Sets the locale for translation.
      *
-     * @param Validatable $validatable
-     *
-     * @return string[]
+     * @param string $locale
+     * @return self
      */
-    // protected function getRulesNames(Validatable $validatable): array
-    // {
-    //     if ($validatable instanceof AbstractComposite) {
-    //         $rulesNames = [];
-    //         foreach ($validatable->getRules() as $rule) {
-    //             array_push($rulesNames, ...$this->getRulesNames($rule instanceof AbstractWrapper ? $rule->getValidatable() : $rule));
-    //         }
+    public function setLocale(string $locale): self
+    {
+        if ($this->translationManager === null) {
+            $this->translationManager = new TranslationManager($locale);
+        } else {
+            $this->translationManager->setLocale($locale);
+        }
 
-    //         return $rulesNames;
-    //     }
+        return $this;
+    }
 
-    //     return [lcfirst((new ReflectionClass($validatable))->getShortName())];
-    // }
+    /**
+     * Gets the current locale.
+     *
+     * @return string|null
+     */
+    public function getLocale(): ?string
+    {
+        return $this->translationManager?->getLocale();
+    }
+
+    /**
+     * Gets the translation manager.
+     *
+     * @return TranslationManager|null
+     */
+    public function getTranslationManager(): ?TranslationManager
+    {
+        return $this->translationManager;
+    }
 
     /**
      * Handles a validation exception.
@@ -594,25 +632,33 @@ class Validator implements ValidatorInterface
      */
     protected function storeErrors(NestedValidationException $e, Configuration $config, array $messages = [])
     {
+        // Base: respect/validation default messages
         $errors = [
             $e->getMessages()
-            // $e->getMessages($this->getRulesNames($config->getValidationRules()))
         ];
 
-        // If default messages are defined
-        // if (!empty($this->defaultMessages)) {
-        //     $errors[] = $e->getMessages($this->defaultMessages);
-        // }
+        // Locale-based translations
+        if ($this->translationManager !== null) {
+            $translations = $this->translationManager->getTranslations();
+            if (!empty($translations)) {
+                $errors[] = $e->getMessages($translations);
+            }
+        }
 
-        // // If global messages are defined
-        // if (!empty($messages)) {
-        //     $errors[] = $e->getMessages($messages);
-        // }
+        // Default messages (constructor-injected)
+        if (!empty($this->defaultMessages)) {
+            $errors[] = $e->getMessages($this->defaultMessages);
+        }
 
-        // // If individual messages are defined
-        // if ($config->hasMessages()) {
-        //     $errors[] = $e->getMessages($config->getMessages());
-        // }
+        // Global per-call messages
+        if (!empty($messages)) {
+            $errors[] = $e->getMessages($messages);
+        }
+
+        // Individual per-field messages
+        if ($config->hasMessages()) {
+            $errors[] = $e->getMessages($config->getMessages());
+        }
 
         $this->setErrors($this->mergeMessages($errors), $config->getKey(), $config->getGroup());
     }

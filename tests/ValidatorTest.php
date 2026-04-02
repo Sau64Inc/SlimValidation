@@ -332,4 +332,92 @@ class ValidatorTest extends TestCase
 
         $this->assertFalse($this->validator->isValid());
     }
+
+    public function testLocaleSpanishMessages()
+    {
+        $validator = new Validator(locale: 'es');
+        $validator->request($this->request, [
+            'username' => V::length(8)
+        ]);
+
+        $errors = $validator->getErrors();
+        $this->assertArrayHasKey('username', $errors);
+        $this->assertArrayHasKey('length', $errors['username']);
+        $this->assertStringContainsString('caracteres', $errors['username']['length']);
+    }
+
+    public function testLocaleDefaultIsNull()
+    {
+        $validator = new Validator();
+        $this->assertNull($validator->getLocale());
+    }
+
+    public function testSetLocaleAtRuntime()
+    {
+        $validator = new Validator();
+        $validator->setLocale('es');
+        $this->assertEquals('es', $validator->getLocale());
+
+        $validator->request($this->request, [
+            'username' => V::length(8)
+        ]);
+
+        $errors = $validator->getErrors();
+        $this->assertStringContainsString('caracteres', $errors['username']['length']);
+    }
+
+    public function testDefaultMessagesOverrideLocale()
+    {
+        $validator = new Validator(
+            defaultMessages: ['length' => 'Custom length message'],
+            locale: 'es'
+        );
+        $validator->request($this->request, [
+            'username' => V::length(8)
+        ]);
+
+        $errors = $validator->getErrors();
+        $this->assertEquals('Custom length message', $errors['username']['length']);
+    }
+
+    public function testPerFieldMessagesOverrideAll()
+    {
+        $validator = new Validator(
+            defaultMessages: ['length' => 'Default override'],
+            locale: 'es'
+        );
+        $validator->request($this->request, [
+            'username' => [
+                'rules' => V::length(8),
+                'messages' => ['length' => 'Per-field override']
+            ]
+        ]);
+
+        $errors = $validator->getErrors();
+        $this->assertEquals('Per-field override', $errors['username']['length']);
+    }
+
+    public function testGlobalMessagesOverrideLocale()
+    {
+        $validator = new Validator(locale: 'es');
+        $validator->request($this->request, [
+            'username' => V::length(8)
+        ], null, ['length' => 'Global override']);
+
+        $errors = $validator->getErrors();
+        $this->assertEquals('Global override', $errors['username']['length']);
+    }
+
+    public function testBackwardCompatibilityWithoutLocale()
+    {
+        $this->validator->request($this->request, [
+            'username' => V::length(8)
+        ]);
+
+        $errors = $this->validator->getErrors();
+        $this->assertArrayHasKey('username', $errors);
+        $this->assertArrayHasKey('length', $errors['username']);
+        // Should be the default English message from respect/validation
+        $this->assertStringContainsString('must have a length', $errors['username']['length']);
+    }
 }

@@ -485,8 +485,6 @@ class Validator implements ValidatorInterface
 
         try {
             $reflectionProperty = new ReflectionProperty($object, $propertyName);
-            $reflectionProperty->setAccessible(true);
-
             return $reflectionProperty->getValue($object);
         } catch (ReflectionException $e) {
             return $default;

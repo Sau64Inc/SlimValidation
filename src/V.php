@@ -14,13 +14,13 @@ use Respect\Validation\Validator;
  *
  * @mixin \Respect\Validation\StaticValidator
  *
- * @method static Validator fileUploaded()
- * @method static Validator fileMaxSize(int|string $maxSize)
- * @method static Validator fileMimeType(array $allowedTypes)
- * @method static Validator numeric()
- * @method static Validator internationalPhone()
- * @method static Validator uInt32()
- * @method static Validator int32()
+ * @method static V fileUploaded()
+ * @method static V fileMaxSize(int|string $maxSize)
+ * @method static V fileMimeType(array $allowedTypes)
+ * @method static V numeric()
+ * @method static V internationalPhone()
+ * @method static V uInt32()
+ * @method static V int32()
  */
 class V
 {

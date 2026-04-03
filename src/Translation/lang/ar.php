@@ -1,0 +1,117 @@
+<?php
+
+/**
+ * ترجمات عربية لقواعد Respect\Validation 2.x.
+ */
+return [
+    // قواعد النص
+    'length' => '{{name}} يجب أن يكون بين {{minValue}} و {{maxValue}} حرف',
+    'notBlank' => '{{name}} مطلوب',
+    'notEmpty' => '{{name}} يجب ألا يكون فارغاً',
+    'email' => '{{name}} يجب أن يكون بريد إلكتروني صحيح',
+    'url' => '{{name}} يجب أن يكون رابط صحيح',
+    'regex' => '{{name}} يجب أن يطابق النمط {{regex}}',
+    'alnum' => '{{name}} يجب أن يحتوي فقط على حروف وأرقام',
+    'alpha' => '{{name}} يجب أن يحتوي فقط على حروف',
+    'digit' => '{{name}} يجب أن يحتوي فقط على أرقام',
+    'lowercase' => '{{name}} يجب أن يكون بحروف صغيرة',
+    'uppercase' => '{{name}} يجب أن يكون بحروف كبيرة',
+    'contains' => '{{name}} يجب أن يحتوي على القيمة {{containsValue}}',
+    'startsWith' => '{{name}} يجب أن يبدأ بـ {{startValue}}',
+    'endsWith' => '{{name}} يجب أن ينتهي بـ {{endValue}}',
+    'slug' => '{{name}} يجب أن يكون slug صحيح',
+    'noWhitespace' => '{{name}} يجب ألا يحتوي على مسافات',
+
+    // قواعد رقمية
+    'numeric' => '{{name}} يجب أن يكون رقمياً',
+    'numericVal' => '{{name}} يجب أن يكون رقمياً',
+    'intVal' => '{{name}} يجب أن يكون عدد صحيح',
+    'floatVal' => '{{name}} يجب أن يكون عدد عشري',
+    'number' => '{{name}} يجب أن يكون رقم',
+    'positive' => '{{name}} يجب أن يكون موجب',
+    'negative' => '{{name}} يجب أن يكون سالب',
+    'between' => '{{name}} يجب أن يكون بين {{minValue}} و {{maxValue}}',
+    'min' => '{{name}} يجب أن يكون أكبر من أو يساوي {{compareTo}}',
+    'max' => '{{name}} يجب أن يكون أصغر من أو يساوي {{compareTo}}',
+    'greaterThan' => '{{name}} يجب أن يكون أكبر من {{compareTo}}',
+    'lessThan' => '{{name}} يجب أن يكون أصغر من {{compareTo}}',
+    'decimal' => '{{name}} يجب أن يحتوي على {{decimals}} خانة عشرية',
+    'even' => '{{name}} يجب أن يكون عدد زوجي',
+    'odd' => '{{name}} يجب أن يكون عدد فردي',
+    'multiple' => '{{name}} يجب أن يكون من مضاعفات {{multipleOf}}',
+
+    // قواعد المقارنة
+    'equals' => '{{name}} يجب أن يساوي {{compareTo}}',
+    'equivalent' => '{{name}} يجب أن يكون مكافئ لـ {{compareTo}}',
+    'identical' => '{{name}} يجب أن يكون مطابق لـ {{compareTo}}',
+    'in' => '{{name}} يجب أن يكون في {{haystack}}',
+
+    // قواعد النوع
+    'stringType' => '{{name}} يجب أن يكون نص',
+    'intType' => '{{name}} يجب أن يكون عدد صحيح',
+    'floatType' => '{{name}} يجب أن يكون عدد عشري',
+    'boolType' => '{{name}} يجب أن يكون قيمة منطقية',
+    'boolVal' => '{{name}} يجب أن يكون قيمة منطقية',
+    'arrayType' => '{{name}} يجب أن يكون مصفوفة',
+    'arrayVal' => '{{name}} يجب أن يكون قيمة مصفوفة',
+    'objectType' => '{{name}} يجب أن يكون كائن',
+    'nullType' => '{{name}} يجب أن يكون null',
+    'resourceType' => '{{name}} يجب أن يكون مورد',
+    'callableType' => '{{name}} يجب أن يكون قابل للاستدعاء',
+    'scalarVal' => '{{name}} يجب أن يكون قيمة إفرادية',
+    'iterableType' => '{{name}} يجب أن يكون قابل للتكرار',
+    'countable' => '{{name}} يجب أن يكون قابل للعد',
+
+    // قواعد التاريخ/الوقت
+    'date' => '{{name}} يجب أن يكون تاريخ صحيح بصيغة {{sample}}',
+    'dateTime' => '{{name}} يجب أن يكون تاريخ/وقت صحيح',
+    'time' => '{{name}} يجب أن يكون وقت صحيح بصيغة {{sample}}',
+    'leapDate' => '{{name}} يجب أن يكون تاريخ كبيس',
+    'leapYear' => '{{name}} يجب أن يكون سنة كبيسة',
+    'minAge' => '{{name}} يجب أن يكون على الأقل {{age}} سنة',
+    'maxAge' => '{{name}} يجب أن يكون على الأكثر {{age}} سنة',
+
+    // قواعد الملفات
+    'file' => '{{name}} يجب أن يكون ملف',
+    'directory' => '{{name}} يجب أن يكون مجلد',
+    'exists' => '{{name}} يجب أن يكون موجود',
+    'readable' => '{{name}} يجب أن يكون قابل للقراءة',
+    'writable' => '{{name}} يجب أن يكون قابل للكتابة',
+    'executable' => '{{name}} يجب أن يكون قابل للتنفيذ',
+    'uploaded' => '{{name}} يجب أن يكون ملف مرفوع',
+    'image' => '{{name}} يجب أن يكون صورة صحيحة',
+    'mimetype' => '{{name}} يجب أن يكون من نوع MIME {{mimetype}}',
+    'extension' => '{{name}} يجب أن يكون له الامتداد {{extension}}',
+    'size' => '{{name}} يجب أن يكون حجمه بين {{minSize}} و {{maxSize}}',
+
+    // قواعد خاصة
+    'optional' => '{{name}} اختياري',
+    'nullable' => '{{name}} يمكن أن يكون null',
+    'notOptional' => '{{name}} مطلوب',
+    'key' => '{{name}} يجب أن يكون موجود',
+    'callback' => '{{name}} غير صحيح',
+    'not' => '{{name}} غير صحيح',
+    'json' => '{{name}} يجب أن يكون JSON صحيح',
+    'uuid' => '{{name}} يجب أن يكون UUID صحيح',
+    'ip' => '{{name}} يجب أن يكون عنوان IP صحيح',
+    'phone' => '{{name}} يجب أن يكون رقم هاتف صحيح',
+    'creditCard' => '{{name}} يجب أن يكون رقم بطاقة ائتمان صحيح',
+    'isbn' => '{{name}} يجب أن يكون ISBN صحيح',
+    'iban' => '{{name}} يجب أن يكون IBAN صحيح',
+    'postalCode' => '{{name}} يجب أن يكون رمز بريدي صحيح',
+    'countryCode' => '{{name}} يجب أن يكون رمز دولة صحيح',
+    'currencyCode' => '{{name}} يجب أن يكون رمز عملة صحيح',
+    'languageCode' => '{{name}} يجب أن يكون رمز لغة صحيح',
+    'tld' => '{{name}} يجب أن يكون نطاق أعلى صحيح',
+    'domain' => '{{name}} يجب أن يكون نطاق صحيح',
+    'macAddress' => '{{name}} يجب أن يكون عنوان MAC صحيح',
+    'version' => '{{name}} يجب أن يكون رقم إصدار صحيح',
+    'unique' => '{{name}} يجب أن يحتوي فقط على قيم فريدة',
+    'subset' => '{{name}} يجب أن يكون مجموعة جزئية من {{superset}}',
+    'sorted' => '{{name}} يجب أن يكون مرتب',
+
+    // قواعد رفع الملفات
+    'fileUploaded' => '{{name}} يجب أن يكون ملف مرفوع بنجاح',
+    'fileMaxSize' => '{{name}} يتجاوز الحجم الأقصى المسموح به',
+    'fileMimeType' => '{{name}} يجب أن يكون نوع ملف صالح',
+];

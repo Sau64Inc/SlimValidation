@@ -1,0 +1,117 @@
+<?php
+
+/**
+ * Traductions françaises pour les règles de Respect\Validation 2.x.
+ */
+return [
+    // Règles de texte
+    'length' => '{{name}} doit avoir entre {{minValue}} et {{maxValue}} caractères',
+    'notBlank' => '{{name}} est requis',
+    'notEmpty' => '{{name}} ne doit pas être vide',
+    'email' => '{{name}} doit être une adresse email valide',
+    'url' => '{{name}} doit être une URL valide',
+    'regex' => '{{name}} doit correspondre au motif {{regex}}',
+    'alnum' => '{{name}} ne doit contenir que des lettres et des chiffres',
+    'alpha' => '{{name}} ne doit contenir que des lettres',
+    'digit' => '{{name}} ne doit contenir que des chiffres',
+    'lowercase' => '{{name}} doit être en minuscules',
+    'uppercase' => '{{name}} doit être en majuscules',
+    'contains' => '{{name}} doit contenir la valeur {{containsValue}}',
+    'startsWith' => '{{name}} doit commencer par {{startValue}}',
+    'endsWith' => '{{name}} doit se terminer par {{endValue}}',
+    'slug' => '{{name}} doit être un slug valide',
+    'noWhitespace' => '{{name}} ne doit pas contenir d\'espaces',
+
+    // Règles numériques
+    'numeric' => '{{name}} doit être numérique',
+    'numericVal' => '{{name}} doit être numérique',
+    'intVal' => '{{name}} doit être un nombre entier',
+    'floatVal' => '{{name}} doit être un nombre décimal',
+    'number' => '{{name}} doit être un nombre',
+    'positive' => '{{name}} doit être positif',
+    'negative' => '{{name}} doit être négatif',
+    'between' => '{{name}} doit être entre {{minValue}} et {{maxValue}}',
+    'min' => '{{name}} doit être supérieur ou égal à {{compareTo}}',
+    'max' => '{{name}} doit être inférieur ou égal à {{compareTo}}',
+    'greaterThan' => '{{name}} doit être supérieur à {{compareTo}}',
+    'lessThan' => '{{name}} doit être inférieur à {{compareTo}}',
+    'decimal' => '{{name}} doit avoir {{decimals}} décimales',
+    'even' => '{{name}} doit être un nombre pair',
+    'odd' => '{{name}} doit être un nombre impair',
+    'multiple' => '{{name}} doit être un multiple de {{multipleOf}}',
+
+    // Règles de comparaison
+    'equals' => '{{name}} doit être égal à {{compareTo}}',
+    'equivalent' => '{{name}} doit être équivalent à {{compareTo}}',
+    'identical' => '{{name}} doit être identique à {{compareTo}}',
+    'in' => '{{name}} doit être dans {{haystack}}',
+
+    // Règles de type
+    'stringType' => '{{name}} doit être une chaîne de caractères',
+    'intType' => '{{name}} doit être un entier',
+    'floatType' => '{{name}} doit être un décimal',
+    'boolType' => '{{name}} doit être un booléen',
+    'boolVal' => '{{name}} doit être une valeur booléenne',
+    'arrayType' => '{{name}} doit être un tableau',
+    'arrayVal' => '{{name}} doit être une valeur de tableau',
+    'objectType' => '{{name}} doit être un objet',
+    'nullType' => '{{name}} doit être nul',
+    'resourceType' => '{{name}} doit être une ressource',
+    'callableType' => '{{name}} doit être appelable',
+    'scalarVal' => '{{name}} doit être une valeur scalaire',
+    'iterableType' => '{{name}} doit être itérable',
+    'countable' => '{{name}} doit être dénombrable',
+
+    // Règles de date/heure
+    'date' => '{{name}} doit être une date valide au format {{sample}}',
+    'dateTime' => '{{name}} doit être une date/heure valide',
+    'time' => '{{name}} doit être une heure valide au format {{sample}}',
+    'leapDate' => '{{name}} doit être une date bissextile',
+    'leapYear' => '{{name}} doit être une année bissextile',
+    'minAge' => '{{name}} doit avoir au moins {{age}} ans',
+    'maxAge' => '{{name}} doit avoir au maximum {{age}} ans',
+
+    // Règles de fichier
+    'file' => '{{name}} doit être un fichier',
+    'directory' => '{{name}} doit être un répertoire',
+    'exists' => '{{name}} doit exister',
+    'readable' => '{{name}} doit être lisible',
+    'writable' => '{{name}} doit être inscriptible',
+    'executable' => '{{name}} doit être exécutable',
+    'uploaded' => '{{name}} doit être un fichier téléversé',
+    'image' => '{{name}} doit être une image valide',
+    'mimetype' => '{{name}} doit avoir le type MIME {{mimetype}}',
+    'extension' => '{{name}} doit avoir l\'extension {{extension}}',
+    'size' => '{{name}} doit avoir une taille entre {{minSize}} et {{maxSize}}',
+
+    // Règles spéciales
+    'optional' => '{{name}} est optionnel',
+    'nullable' => '{{name}} peut être nul',
+    'notOptional' => '{{name}} est requis',
+    'key' => '{{name}} doit être présent',
+    'callback' => '{{name}} n\'est pas valide',
+    'not' => '{{name}} n\'est pas valide',
+    'json' => '{{name}} doit être un JSON valide',
+    'uuid' => '{{name}} doit être un UUID valide',
+    'ip' => '{{name}} doit être une adresse IP valide',
+    'phone' => '{{name}} doit être un numéro de téléphone valide',
+    'creditCard' => '{{name}} doit être un numéro de carte de crédit valide',
+    'isbn' => '{{name}} doit être un ISBN valide',
+    'iban' => '{{name}} doit être un IBAN valide',
+    'postalCode' => '{{name}} doit être un code postal valide',
+    'countryCode' => '{{name}} doit être un code pays valide',
+    'currencyCode' => '{{name}} doit être un code devise valide',
+    'languageCode' => '{{name}} doit être un code langue valide',
+    'tld' => '{{name}} doit être un domaine de premier niveau valide',
+    'domain' => '{{name}} doit être un domaine valide',
+    'macAddress' => '{{name}} doit être une adresse MAC valide',
+    'version' => '{{name}} doit être un numéro de version valide',
+    'unique' => '{{name}} ne doit contenir que des valeurs uniques',
+    'subset' => '{{name}} doit être un sous-ensemble de {{superset}}',
+    'sorted' => '{{name}} doit être trié',
+
+    // Règles de téléversement de fichier
+    'fileUploaded' => '{{name}} doit être un fichier téléversé avec succès',
+    'fileMaxSize' => '{{name}} dépasse la taille maximale autorisée',
+    'fileMimeType' => '{{name}} doit avoir un type de fichier valide',
+];

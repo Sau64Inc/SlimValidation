@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Awurth\SlimValidation\Rules;
 
-use Respect\Validation\Rules\AbstractRule;
+use Respect\Validation\Rules\Core\Simple;
 
 use function is_numeric;
 
-final class Numeric extends AbstractRule
+final class Numeric extends Simple
 {
-    public function validate($input): bool
+    public function isValid(mixed $input): bool
     {
         return is_numeric($input);
     }

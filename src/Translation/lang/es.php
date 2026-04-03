@@ -118,4 +118,5 @@ return [
     'internationalPhone' => 'Debe ser un número de teléfono internacional válido',
     'uInt32' => 'Debe ser un entero sin signo de 32 bits (0 a 4294967295)',
     'int32' => 'Debe ser un entero con signo de 32 bits (-2147483648 a 2147483647)',
+    'fileCount' => 'Debe contener entre {{minValue}} y {{maxValue}} archivos',
 ];

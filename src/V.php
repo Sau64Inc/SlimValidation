@@ -21,6 +21,7 @@ use Respect\Validation\Validator;
  * @method static V internationalPhone()
  * @method static V uInt32()
  * @method static V int32()
+ * @method static V fileCount(int $min, ?int $max = null)
  */
 class V
 {

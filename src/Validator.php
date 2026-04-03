@@ -13,9 +13,11 @@ namespace Sau64Inc\SlimValidation;
 
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\UploadedFileInterface;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
+use Sau64Inc\SlimValidation\Rules\FileCount;
 use Sau64Inc\SlimValidation\Translation\TranslationManager;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Factory;
@@ -545,7 +547,12 @@ class Validator implements ValidatorInterface
         $result = $default;
         if (isset($uploadedFiles[$key])) {
             $file = $uploadedFiles[$key];
-            $result = ($file->getError() === UPLOAD_ERR_NO_FILE) ? null : $file;
+            if (is_array($file)) {
+                $files = array_filter($file, fn(UploadedFileInterface $f) => $f->getError() !== UPLOAD_ERR_NO_FILE);
+                $result = empty($files) ? null : array_values($files);
+            } else {
+                $result = ($file->getError() === UPLOAD_ERR_NO_FILE) ? null : [$file];
+            }
         } elseif (is_array($postParams) && isset($postParams[$key])) {
             $result = $postParams[$key];
         } elseif (is_object($postParams) && property_exists($postParams, $key)) {
@@ -679,6 +686,46 @@ class Validator implements ValidatorInterface
      */
     protected function validateInput($input, Configuration $config, array $messages = []): self
     {
+        if (is_array($input) && !empty($input) && $input[0] instanceof UploadedFileInterface) {
+            $validator = $config->getValidationRules();
+            $allRules = $validator instanceof AbstractComposite ? $validator->getRules() : [];
+
+            $arrayRules = [];
+            $perFileRules = [];
+            foreach ($allRules as $rule) {
+                if ($rule instanceof FileCount) {
+                    $arrayRules[] = $rule;
+                } else {
+                    $perFileRules[] = $rule;
+                }
+            }
+
+            // Validate array-level rules (fileCount) against the full array
+            foreach ($arrayRules as $rule) {
+                try {
+                    \Respect\Validation\Validator::create($rule)->assert($input);
+                } catch (NestedValidationException $e) {
+                    $this->handleValidationException($e, $config, $messages);
+                    return $this->setValue($config->getKey(), $input, $config->getGroup());
+                }
+            }
+
+            // Validate per-file rules against each individual file
+            if (!empty($perFileRules)) {
+                $perFileValidator = \Respect\Validation\Validator::create(...$perFileRules);
+                foreach ($input as $file) {
+                    try {
+                        $perFileValidator->assert($file);
+                    } catch (NestedValidationException $e) {
+                        $this->handleValidationException($e, $config, $messages);
+                        break;
+                    }
+                }
+            }
+
+            return $this->setValue($config->getKey(), $input, $config->getGroup());
+        }
+
         try {
             $config->getValidationRules()->assert($input);
         } catch (NestedValidationException $e) {

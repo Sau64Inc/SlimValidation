@@ -438,7 +438,9 @@ class ValidatorTest extends TestCase
         ]);
 
         $this->assertTrue($this->validator->isValid());
-        $this->assertInstanceOf(\Psr\Http\Message\UploadedFileInterface::class, $this->validator->getValue('receipt'));
+        $this->assertIsArray($this->validator->getValue('receipt'));
+        $this->assertCount(1, $this->validator->getValue('receipt'));
+        $this->assertInstanceOf(\Psr\Http\Message\UploadedFileInterface::class, $this->validator->getValue('receipt')[0]);
 
         unlink($tmpFile);
     }
@@ -560,5 +562,197 @@ class ValidatorTest extends TestCase
         $this->assertNull($this->validator->getValue('receipt'));
 
         unlink($tmpFile);
+    }
+
+    public function testMultipleFileUploadsValid()
+    {
+        $tmpFile1 = tempnam(sys_get_temp_dir(), 'test');
+        $tmpFile2 = tempnam(sys_get_temp_dir(), 'test');
+        file_put_contents($tmpFile1, 'file one');
+        file_put_contents($tmpFile2, 'file two');
+
+        $uploaded1 = new UploadedFile($tmpFile1, 'a.txt', 'text/plain', filesize($tmpFile1), UPLOAD_ERR_OK);
+        $uploaded2 = new UploadedFile($tmpFile2, 'b.txt', 'text/plain', filesize($tmpFile2), UPLOAD_ERR_OK);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withUploadedFiles(['file' => [$uploaded1, $uploaded2]]);
+
+        $this->validator->request($request, [
+            'file' => V::fileUploaded()->fileMaxSize('1MB'),
+        ]);
+
+        $this->assertTrue($this->validator->isValid());
+        $values = $this->validator->getValue('file');
+        $this->assertIsArray($values);
+        $this->assertCount(2, $values);
+
+        unlink($tmpFile1);
+        unlink($tmpFile2);
+    }
+
+    public function testMultipleFileUploadsOneInvalid()
+    {
+        $tmpFile1 = tempnam(sys_get_temp_dir(), 'test');
+        $tmpFile2 = tempnam(sys_get_temp_dir(), 'test');
+        file_put_contents($tmpFile1, str_repeat('x', 50));
+        file_put_contents($tmpFile2, str_repeat('x', 2000));
+
+        $uploaded1 = new UploadedFile($tmpFile1, 'small.txt', 'text/plain', 50, UPLOAD_ERR_OK);
+        $uploaded2 = new UploadedFile($tmpFile2, 'big.txt', 'text/plain', 2000, UPLOAD_ERR_OK);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withUploadedFiles(['file' => [$uploaded1, $uploaded2]]);
+
+        $this->validator->request($request, [
+            'file' => V::fileUploaded()->fileMaxSize(100),
+        ]);
+
+        $this->assertFalse($this->validator->isValid());
+
+        unlink($tmpFile1);
+        unlink($tmpFile2);
+    }
+
+    public function testMultipleFileUploadsAllNoFile()
+    {
+        $tmpFile1 = tempnam(sys_get_temp_dir(), 'test');
+        $tmpFile2 = tempnam(sys_get_temp_dir(), 'test');
+
+        $uploaded1 = new UploadedFile($tmpFile1, '', 'text/plain', 0, UPLOAD_ERR_NO_FILE);
+        $uploaded2 = new UploadedFile($tmpFile2, '', 'text/plain', 0, UPLOAD_ERR_NO_FILE);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withUploadedFiles(['file' => [$uploaded1, $uploaded2]]);
+
+        $this->validator->request($request, [
+            'file' => V::optional(V::fileUploaded()),
+        ]);
+
+        $this->assertTrue($this->validator->isValid());
+        $this->assertNull($this->validator->getValue('file'));
+
+        unlink($tmpFile1);
+        unlink($tmpFile2);
+    }
+
+    public function testFileCountValid()
+    {
+        $tmpFile1 = tempnam(sys_get_temp_dir(), 'test');
+        $tmpFile2 = tempnam(sys_get_temp_dir(), 'test');
+        file_put_contents($tmpFile1, 'file one');
+        file_put_contents($tmpFile2, 'file two');
+
+        $uploaded1 = new UploadedFile($tmpFile1, 'a.txt', 'text/plain', filesize($tmpFile1), UPLOAD_ERR_OK);
+        $uploaded2 = new UploadedFile($tmpFile2, 'b.txt', 'text/plain', filesize($tmpFile2), UPLOAD_ERR_OK);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withUploadedFiles(['file' => [$uploaded1, $uploaded2]]);
+
+        $this->validator->request($request, [
+            'file' => V::fileCount(1, 3)->fileUploaded()->fileMaxSize('1MB'),
+        ]);
+
+        $this->assertTrue($this->validator->isValid());
+
+        unlink($tmpFile1);
+        unlink($tmpFile2);
+    }
+
+    public function testFileCountTooMany()
+    {
+        $tmpFiles = [];
+        $uploaded = [];
+        for ($i = 0; $i < 4; $i++) {
+            $tmpFiles[$i] = tempnam(sys_get_temp_dir(), 'test');
+            file_put_contents($tmpFiles[$i], "file $i");
+            $uploaded[$i] = new UploadedFile($tmpFiles[$i], "f$i.txt", 'text/plain', filesize($tmpFiles[$i]), UPLOAD_ERR_OK);
+        }
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withUploadedFiles(['file' => $uploaded]);
+
+        $this->validator->request($request, [
+            'file' => V::fileCount(1, 3)->fileUploaded(),
+        ]);
+
+        $this->assertFalse($this->validator->isValid());
+
+        foreach ($tmpFiles as $f) {
+            unlink($f);
+        }
+    }
+
+    public function testFileCountTooFew()
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), 'test');
+        file_put_contents($tmpFile, 'only one');
+
+        $uploaded = new UploadedFile($tmpFile, 'a.txt', 'text/plain', filesize($tmpFile), UPLOAD_ERR_OK);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withUploadedFiles(['file' => [$uploaded]]);
+
+        $this->validator->request($request, [
+            'file' => V::fileCount(2, 5)->fileUploaded(),
+        ]);
+
+        $this->assertFalse($this->validator->isValid());
+
+        unlink($tmpFile);
+    }
+
+    public function testFileCountExactMatch()
+    {
+        $tmpFile1 = tempnam(sys_get_temp_dir(), 'test');
+        $tmpFile2 = tempnam(sys_get_temp_dir(), 'test');
+        file_put_contents($tmpFile1, 'file one');
+        file_put_contents($tmpFile2, 'file two');
+
+        $uploaded1 = new UploadedFile($tmpFile1, 'a.txt', 'text/plain', filesize($tmpFile1), UPLOAD_ERR_OK);
+        $uploaded2 = new UploadedFile($tmpFile2, 'b.txt', 'text/plain', filesize($tmpFile2), UPLOAD_ERR_OK);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withUploadedFiles(['file' => [$uploaded1, $uploaded2]]);
+
+        $this->validator->request($request, [
+            'file' => V::fileCount(2)->fileUploaded(),
+        ]);
+
+        $this->assertTrue($this->validator->isValid());
+
+        unlink($tmpFile1);
+        unlink($tmpFile2);
+    }
+
+    public function testFileCountWithPerFileValidationFailure()
+    {
+        $tmpFile1 = tempnam(sys_get_temp_dir(), 'test');
+        $tmpFile2 = tempnam(sys_get_temp_dir(), 'test');
+        file_put_contents($tmpFile1, str_repeat('x', 50));
+        file_put_contents($tmpFile2, str_repeat('x', 2000));
+
+        $uploaded1 = new UploadedFile($tmpFile1, 'small.txt', 'text/plain', 50, UPLOAD_ERR_OK);
+        $uploaded2 = new UploadedFile($tmpFile2, 'big.txt', 'text/plain', 2000, UPLOAD_ERR_OK);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withUploadedFiles(['file' => [$uploaded1, $uploaded2]]);
+
+        $this->validator->request($request, [
+            'file' => V::fileCount(1, 5)->fileUploaded()->fileMaxSize(100),
+        ]);
+
+        // fileCount passes (2 files, within 1-5), but fileMaxSize fails on second file
+        $this->assertFalse($this->validator->isValid());
+
+        unlink($tmpFile1);
+        unlink($tmpFile2);
     }
 }

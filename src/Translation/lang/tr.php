@@ -118,4 +118,5 @@ return [
     'internationalPhone' => 'Geçerli bir uluslararası telefon numarası olmalıdır',
     'uInt32' => 'İşaretsiz 32 bit tam sayı olmalıdır (0 ile 4294967295 arası)',
     'int32' => 'İşaretli 32 bit tam sayı olmalıdır (-2147483648 ile 2147483647 arası)',
+    'fileCount' => '{{minValue}} ile {{maxValue}} arasında dosya içermelidir',
 ];

@@ -121,4 +121,5 @@ return [
     'internationalPhone' => 'Must be a valid international phone number',
     'uInt32' => 'Must be an unsigned 32-bit integer (0 to 4294967295)',
     'int32' => 'Must be a signed 32-bit integer (-2147483648 to 2147483647)',
+    'fileCount' => 'Must contain between {{minValue}} and {{maxValue}} files',
 ];

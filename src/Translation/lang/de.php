@@ -118,4 +118,5 @@ return [
     'internationalPhone' => 'Muss eine gültige internationale Telefonnummer sein',
     'uInt32' => 'Muss eine vorzeichenlose 32-Bit-Ganzzahl sein (0 bis 4294967295)',
     'int32' => 'Muss eine vorzeichenbehaftete 32-Bit-Ganzzahl sein (-2147483648 bis 2147483647)',
+    'fileCount' => 'Muss zwischen {{minValue}} und {{maxValue}} Dateien enthalten',
 ];

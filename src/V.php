@@ -12,10 +12,10 @@ use Respect\Validation\Validator;
  *
  * Usage: use Sau64Inc\SlimValidation\V;
  *
- * @method static Validator fileUploaded()
- * @method static Validator fileMaxSize(int|string $maxSize)
- * @method static Validator fileMimeType(array $allowedTypes)
- * @method static Validator numeric()
+ * @method static V fileUploaded()
+ * @method static V fileMaxSize(int|string $maxSize)
+ * @method static V fileMimeType(array $allowedTypes)
+ * @method static V numeric()
  */
 class V extends Validator
 {

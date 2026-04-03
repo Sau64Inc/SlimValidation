@@ -10,10 +10,10 @@ final class NumericException extends ValidationException
 {
     protected $defaultTemplates = [
         self::MODE_DEFAULT => [
-            self::STANDARD => '{{name}} must be numeric',
+            self::STANDARD => 'Must be numeric',
         ],
         self::MODE_NEGATIVE => [
-            self::STANDARD => '{{name}} must not be numeric',
+            self::STANDARD => 'Must not be numeric',
         ],
     ];
 }

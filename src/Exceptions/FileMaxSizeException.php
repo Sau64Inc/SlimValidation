@@ -10,10 +10,10 @@ final class FileMaxSizeException extends ValidationException
 {
     protected $defaultTemplates = [
         self::MODE_DEFAULT => [
-            self::STANDARD => '{{name}} must not exceed the maximum file size',
+            self::STANDARD => 'Exceeds the maximum file size',
         ],
         self::MODE_NEGATIVE => [
-            self::STANDARD => '{{name}} must exceed the maximum file size',
+            self::STANDARD => 'Must exceed the maximum file size',
         ],
     ];
 }

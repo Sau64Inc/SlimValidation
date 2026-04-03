@@ -37,6 +37,7 @@
     },
     "suggest": {
         "twig/twig": "Needed to be able to use the Twig Extension",
-        "slim/twig-view": "Needed to be able to use the Twig Extension with Slim"
+        "slim/twig-view": "Needed to be able to use the Twig Extension with Slim",
+        "giggsey/libphonenumber-for-php": "Needed for the InternationalPhone validation rule"
     }
 }

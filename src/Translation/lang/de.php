@@ -114,4 +114,8 @@ return [
     'fileUploaded' => '{{name}} muss eine erfolgreich hochgeladene Datei sein',
     'fileMaxSize' => '{{name}} überschreitet die maximale Dateigröße',
     'fileMimeType' => '{{name}} muss einen gültigen Dateityp haben',
+    // Benutzerdefinierte Validierungsregeln
+    'internationalPhone' => '{{name}} muss eine gültige internationale Telefonnummer sein',
+    'uInt32' => '{{name}} muss eine vorzeichenlose 32-Bit-Ganzzahl sein (0 bis 4294967295)',
+    'int32' => '{{name}} muss eine vorzeichenbehaftete 32-Bit-Ganzzahl sein (-2147483648 bis 2147483647)',
 ];

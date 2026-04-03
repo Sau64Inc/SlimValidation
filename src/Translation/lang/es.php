@@ -114,4 +114,8 @@ return [
     'fileUploaded' => '{{name}} debe ser un archivo subido correctamente',
     'fileMaxSize' => '{{name}} excede el tamaño máximo permitido',
     'fileMimeType' => '{{name}} debe tener un tipo de archivo válido',
+    // Reglas de validación custom
+    'internationalPhone' => '{{name}} debe ser un número de teléfono internacional válido',
+    'uInt32' => '{{name}} debe ser un entero sin signo de 32 bits (0 a 4294967295)',
+    'int32' => '{{name}} debe ser un entero con signo de 32 bits (-2147483648 a 2147483647)',
 ];

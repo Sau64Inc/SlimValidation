@@ -114,4 +114,8 @@ return [
     'fileUploaded' => '{{name}} başarıyla yüklenmiş bir dosya olmalıdır',
     'fileMaxSize' => '{{name}} izin verilen maksimum dosya boyutunu aşıyor',
     'fileMimeType' => '{{name}} geçerli bir dosya türüne sahip olmalıdır',
+    // Özel doğrulama kuralları
+    'internationalPhone' => '{{name}} geçerli bir uluslararası telefon numarası olmalıdır',
+    'uInt32' => '{{name}} işaretsiz 32 bit tam sayı olmalıdır (0 ile 4294967295 arası)',
+    'int32' => '{{name}} işaretli 32 bit tam sayı olmalıdır (-2147483648 ile 2147483647 arası)',
 ];

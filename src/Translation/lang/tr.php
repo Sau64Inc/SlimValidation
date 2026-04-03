@@ -109,4 +109,9 @@ return [
     'unique' => '{{name}} yalnızca benzersiz değerler içermelidir',
     'subset' => '{{name}} {{superset}} kümesinin bir alt kümesi olmalıdır',
     'sorted' => '{{name}} sıralanmış olmalıdır',
+
+    // Dosya yükleme kuralları
+    'fileUploaded' => '{{name}} başarıyla yüklenmiş bir dosya olmalıdır',
+    'fileMaxSize' => '{{name}} izin verilen maksimum dosya boyutunu aşıyor',
+    'fileMimeType' => '{{name}} geçerli bir dosya türüne sahip olmalıdır',
 ];

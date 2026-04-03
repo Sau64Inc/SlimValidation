@@ -109,4 +109,9 @@ return [
     'unique' => '{{name}} deve contenere solo valori unici',
     'subset' => '{{name}} deve essere un sottoinsieme di {{superset}}',
     'sorted' => '{{name}} deve essere ordinato',
+
+    // Regole di caricamento file
+    'fileUploaded' => '{{name}} deve essere un file caricato con successo',
+    'fileMaxSize' => '{{name}} supera la dimensione massima consentita',
+    'fileMimeType' => '{{name}} deve avere un tipo di file valido',
 ];

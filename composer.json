@@ -14,7 +14,10 @@
     "autoload": {
         "psr-4": {
             "Awurth\\SlimValidation\\": "src"
-        }
+        },
+        "exclude-from-classmap": [
+            "_ide_helper.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

@@ -540,8 +540,13 @@ class Validator implements ValidatorInterface
             $routeParams = $route->getArguments();
         }
 
+        $uploadedFiles = $request->getUploadedFiles();
+
         $result = $default;
-        if (is_array($postParams) && isset($postParams[$key])) {
+        if (isset($uploadedFiles[$key])) {
+            $file = $uploadedFiles[$key];
+            $result = ($file->getError() === UPLOAD_ERR_NO_FILE) ? null : $file;
+        } elseif (is_array($postParams) && isset($postParams[$key])) {
             $result = $postParams[$key];
         } elseif (is_object($postParams) && property_exists($postParams, $key)) {
             $result = $postParams->$key;

@@ -112,4 +112,9 @@ return [
     'unique' => '{{name}} must contain only unique values',
     'subset' => '{{name}} must be a subset of {{superset}}',
     'sorted' => '{{name}} must be sorted',
+
+    // File upload rules
+    'fileUploaded' => '{{name}} must be a successfully uploaded file',
+    'fileMaxSize' => '{{name}} must not exceed the maximum file size',
+    'fileMimeType' => '{{name}} must have a valid MIME type',
 ];

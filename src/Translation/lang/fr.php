@@ -109,4 +109,9 @@ return [
     'unique' => '{{name}} ne doit contenir que des valeurs uniques',
     'subset' => '{{name}} doit être un sous-ensemble de {{superset}}',
     'sorted' => '{{name}} doit être trié',
+
+    // Règles de téléversement de fichier
+    'fileUploaded' => '{{name}} doit être un fichier téléversé avec succès',
+    'fileMaxSize' => '{{name}} dépasse la taille maximale autorisée',
+    'fileMimeType' => '{{name}} doit avoir un type de fichier valide',
 ];

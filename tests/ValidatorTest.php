@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validator as V;
 use Slim\Psr7\Factory\ServerRequestFactory;
+use Slim\Psr7\UploadedFile;
 use TypeError;
 
 class ValidatorTest extends TestCase
@@ -419,5 +420,145 @@ class ValidatorTest extends TestCase
         $this->assertArrayHasKey('length', $errors['username']);
         // Should be the default English message from respect/validation
         $this->assertStringContainsString('must have a length', $errors['username']['length']);
+    }
+
+    public function testFileUploadedValid()
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), 'test');
+        file_put_contents($tmpFile, 'test content');
+
+        $uploaded = new UploadedFile($tmpFile, 'test.txt', 'text/plain', filesize($tmpFile), UPLOAD_ERR_OK);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withUploadedFiles(['receipt' => $uploaded]);
+
+        $this->validator->request($request, [
+            'receipt' => V::fileUploaded()
+        ]);
+
+        $this->assertTrue($this->validator->isValid());
+        $this->assertInstanceOf(\Psr\Http\Message\UploadedFileInterface::class, $this->validator->getValue('receipt'));
+
+        unlink($tmpFile);
+    }
+
+    public function testFileUploadedInvalid()
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), 'test');
+
+        $uploaded = new UploadedFile($tmpFile, 'test.txt', 'text/plain', 0, UPLOAD_ERR_NO_FILE);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withUploadedFiles(['receipt' => $uploaded]);
+
+        $this->validator->request($request, [
+            'receipt' => V::fileUploaded()
+        ]);
+
+        $this->assertFalse($this->validator->isValid());
+
+        unlink($tmpFile);
+    }
+
+    public function testFileMaxSizeValid()
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), 'test');
+        file_put_contents($tmpFile, str_repeat('x', 100));
+
+        $uploaded = new UploadedFile($tmpFile, 'test.txt', 'text/plain', 100, UPLOAD_ERR_OK);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withUploadedFiles(['file' => $uploaded]);
+
+        $this->validator->request($request, [
+            'file' => V::fileMaxSize('1MB')
+        ]);
+
+        $this->assertTrue($this->validator->isValid());
+
+        unlink($tmpFile);
+    }
+
+    public function testFileMaxSizeExceeded()
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), 'test');
+        file_put_contents($tmpFile, str_repeat('x', 2000));
+
+        $uploaded = new UploadedFile($tmpFile, 'big.txt', 'text/plain', 2000, UPLOAD_ERR_OK);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withUploadedFiles(['file' => $uploaded]);
+
+        $this->validator->request($request, [
+            'file' => V::fileMaxSize(100)
+        ]);
+
+        $this->assertFalse($this->validator->isValid());
+
+        unlink($tmpFile);
+    }
+
+    public function testFileMimeTypeValid()
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), 'test');
+        file_put_contents($tmpFile, 'plain text content');
+
+        $uploaded = new UploadedFile($tmpFile, 'test.txt', 'text/plain', filesize($tmpFile), UPLOAD_ERR_OK);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withUploadedFiles(['doc' => $uploaded]);
+
+        $this->validator->request($request, [
+            'doc' => V::fileMimeType(['text/plain', 'text/csv'])
+        ]);
+
+        $this->assertTrue($this->validator->isValid());
+
+        unlink($tmpFile);
+    }
+
+    public function testFileMimeTypeInvalid()
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), 'test');
+        file_put_contents($tmpFile, 'plain text content');
+
+        $uploaded = new UploadedFile($tmpFile, 'test.txt', 'text/plain', filesize($tmpFile), UPLOAD_ERR_OK);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withUploadedFiles(['doc' => $uploaded]);
+
+        $this->validator->request($request, [
+            'doc' => V::fileMimeType(['image/jpeg', 'image/png'])
+        ]);
+
+        $this->assertFalse($this->validator->isValid());
+
+        unlink($tmpFile);
+    }
+
+    public function testFileNoUploadReturnsNull()
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), 'test');
+
+        $uploaded = new UploadedFile($tmpFile, 'test.txt', 'text/plain', 0, UPLOAD_ERR_NO_FILE);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withUploadedFiles(['receipt' => $uploaded]);
+
+        $this->validator->request($request, [
+            'receipt' => V::optional(V::fileUploaded())
+        ]);
+
+        $this->assertTrue($this->validator->isValid());
+        $this->assertNull($this->validator->getValue('receipt'));
+
+        unlink($tmpFile);
     }
 }

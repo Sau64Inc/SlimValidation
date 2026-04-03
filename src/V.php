@@ -12,6 +12,8 @@ use Respect\Validation\Validator;
  *
  * Usage: use Sau64Inc\SlimValidation\V;
  *
+ * @mixin \Respect\Validation\StaticValidator
+ *
  * @method static Validator fileUploaded()
  * @method static Validator fileMaxSize(int|string $maxSize)
  * @method static Validator fileMimeType(array $allowedTypes)

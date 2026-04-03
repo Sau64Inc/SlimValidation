@@ -7,19 +7,26 @@ namespace Sau64Inc\SlimValidation;
 use Respect\Validation\Validator;
 
 /**
- * Validation helper that extends Respect\Validation\Validator.
- * Provides IDE autocompletion for custom rules registered via Factory.
+ * IDE helper that proxies static calls to Respect\Validation\Validator.
+ * Since Validator is a final class, this uses delegation instead of inheritance.
  *
  * Usage: use Sau64Inc\SlimValidation\V;
  *
- * @method static V fileUploaded()
- * @method static V fileMaxSize(int|string $maxSize)
- * @method static V fileMimeType(array $allowedTypes)
- * @method static V numeric()
- * @method static V internationalPhone()
- * @method static V uInt32()
- * @method static V int32()
+ * @method static Validator fileUploaded()
+ * @method static Validator fileMaxSize(int|string $maxSize)
+ * @method static Validator fileMimeType(array $allowedTypes)
+ * @method static Validator numeric()
+ * @method static Validator internationalPhone()
+ * @method static Validator uInt32()
+ * @method static Validator int32()
  */
-class V extends Validator
+class V
 {
+    /**
+     * @param mixed[] $arguments
+     */
+    public static function __callStatic(string $ruleName, array $arguments): Validator
+    {
+        return Validator::__callStatic($ruleName, $arguments);
+    }
 }

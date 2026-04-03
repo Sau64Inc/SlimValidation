@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Awurth\SlimValidation\Exceptions;
+namespace Sau64Inc\SlimValidation\Exceptions;
 
 use Respect\Validation\Exceptions\ValidationException;
 

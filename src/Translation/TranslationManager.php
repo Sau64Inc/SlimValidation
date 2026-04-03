@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Awurth\SlimValidation\Translation;
+namespace Sau64Inc\SlimValidation\Translation;
 
 class TranslationManager
 {

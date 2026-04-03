@@ -1,9 +1,9 @@
 <?php
 
-namespace Awurth\SlimValidation\Tests;
+namespace Sau64Inc\SlimValidation\Tests;
 
-use Awurth\SlimValidation\Validator;
-use Awurth\SlimValidation\ValidatorExtension;
+use Sau64Inc\SlimValidation\Validator;
+use Sau64Inc\SlimValidation\ValidatorExtension;
 use PHPUnit\Framework\TestCase;
 
 class ValidatorExtensionTest extends TestCase

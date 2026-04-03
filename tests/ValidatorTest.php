@@ -1,8 +1,8 @@
 <?php
 
-namespace Awurth\SlimValidation\Tests;
+namespace Sau64Inc\SlimValidation\Tests;
 
-use Awurth\SlimValidation\Validator;
+use Sau64Inc\SlimValidation\Validator;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;

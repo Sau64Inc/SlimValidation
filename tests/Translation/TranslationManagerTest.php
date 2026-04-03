@@ -1,8 +1,8 @@
 <?php
 
-namespace Awurth\SlimValidation\Tests\Translation;
+namespace Sau64Inc\SlimValidation\Tests\Translation;
 
-use Awurth\SlimValidation\Translation\TranslationManager;
+use Sau64Inc\SlimValidation\Translation\TranslationManager;
 use PHPUnit\Framework\TestCase;
 
 class TranslationManagerTest extends TestCase

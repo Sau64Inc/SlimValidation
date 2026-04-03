@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Awurth\SlimValidation\Rules;
+namespace Sau64Inc\SlimValidation\Rules;
 
 use Respect\Validation\Rules\Core\Simple;
 

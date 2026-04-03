@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Awurth\SlimValidation;
+namespace Sau64Inc\SlimValidation;
 
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
-use Awurth\SlimValidation\Translation\TranslationManager;
+use Sau64Inc\SlimValidation\Translation\TranslationManager;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Factory;
 use Respect\Validation\Rules\AbstractComposite;
@@ -96,8 +96,8 @@ class Validator implements ValidatorInterface
 
         Factory::setDefaultInstance(
             (new Factory())
-                ->withRuleNamespace('Awurth\\SlimValidation\\Rules')
-                ->withExceptionNamespace('Awurth\\SlimValidation\\Exceptions')
+                ->withRuleNamespace('Sau64Inc\\SlimValidation\\Rules')
+                ->withExceptionNamespace('Sau64Inc\\SlimValidation\\Exceptions')
         );
     }
 

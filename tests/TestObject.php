@@ -1,6 +1,6 @@
 <?php
 
-namespace Awurth\SlimValidation\Tests;
+namespace Sau64Inc\SlimValidation\Tests;
 
 class TestObject
 {

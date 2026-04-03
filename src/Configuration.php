@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Awurth\SlimValidation;
+namespace Sau64Inc\SlimValidation;
 
 use InvalidArgumentException;
 use Respect\Validation\Validatable;

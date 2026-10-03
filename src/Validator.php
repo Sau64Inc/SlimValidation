@@ -686,7 +686,8 @@ class Validator implements ValidatorInterface
      */
     protected function validateInput($input, Configuration $config, array $messages = []): self
     {
-        if (is_array($input) && !empty($input) && $input[0] instanceof UploadedFileInterface) {
+        // Only a list can be a multi-file upload, a nested form field is keyed by its own ids.
+        if (is_array($input) && $input !== [] && array_is_list($input) && $input[0] instanceof UploadedFileInterface) {
             $validator = $config->getValidationRules();
             $allRules = $validator instanceof AbstractComposite ? $validator->getRules() : [];
 

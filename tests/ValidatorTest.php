@@ -3,6 +3,7 @@
 namespace Sau64Inc\SlimValidation\Tests;
 
 use Sau64Inc\SlimValidation\Validator;
+use ErrorException;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -562,6 +563,29 @@ class ValidatorTest extends TestCase
         $this->assertNull($this->validator->getValue('receipt'));
 
         unlink($tmpFile);
+    }
+
+    public function testNestedFormArrayWithoutKeyZero()
+    {
+        // A nested form field like transaction[42][refund_amount] arrives keyed by id, with no
+        // key 0, and must validate as plain data without touching $input[0].
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'http://localhost')
+            ->withParsedBody(['transaction' => ['42' => ['refund_amount' => '10', 'cancel' => '0']]]);
+
+        set_error_handler(function (int $severity, string $message): never {
+            throw new ErrorException($message, 0, $severity);
+        });
+        try {
+            $this->validator->request($request, [
+                'transaction' => V::optional(V::arrayVal()),
+            ]);
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertTrue($this->validator->isValid());
+        $this->assertSame(['42' => ['refund_amount' => '10', 'cancel' => '0']], $this->validator->getValue('transaction'));
     }
 
     public function testMultipleFileUploadsValid()
